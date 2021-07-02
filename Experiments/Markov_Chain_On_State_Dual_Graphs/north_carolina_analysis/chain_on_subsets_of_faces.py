@@ -1,6 +1,7 @@
 ## This script will perform a markov chain on the  subset faces of the north carolina graph, picking a face UAR and sierpinskifying or de-sierpinskifying it, then running gerrychain on the graph, recording central seat tendencies.
 # the output of the chain is stored in north_carolina/plots in a pickled object.
-import facefinder
+# import facefinder
+from Experiments.Markov_Chain_On_State_Dual_Graphs.north_carolina_analysis import facefinder
 import numpy as np
 import pandas as pd
 import random
@@ -30,7 +31,7 @@ from gerrychain import GeographicPartition
 from gerrychain.partition import Partition
 from gerrychain.proposals import recom
 from gerrychain.metrics import mean_median, efficiency_gap
-from gerrychain.tree import recursive_tree_part, bipartition_tree_random, PopulatedGraph, contract_leaves_until_balanced_or_none, find_balanced_edge_cuts
+from gerrychain.tree import recursive_tree_part, bipartition_tree_random, PopulatedGraph
 from collections import defaultdict
 
 def face_sierpinski_mesh(graph, special_faces):
@@ -148,6 +149,8 @@ def face_sierpinski_mesh(graph, special_faces):
         siblings = tuple(newEdges)
         for edge in newEdges:
             graph.edges[edge]['siblings'] = siblings
+
+
 def add_edge_proposal(graph, special_faces):
     """Takes set of 4 edge faces, and adds an edge.
 
@@ -155,12 +158,18 @@ def add_edge_proposal(graph, special_faces):
         graph (Gerrychain Graph): graph in JSON file following cleaning
         special_faces (List): list of four sided faces
     """
+    #Todo: add a flag to indiicate edge is added and break the outer for loop
     for face in special_faces:
         for vertex in face:
+            edge_added = False
             for itr_vertex in face:
-                if ((not graph.has_edge(vertex, itr_vertex)) and (not graph.has_edge(itr_vertex, vertex)) and vertex != vertex):
-                    graph.add_edge(vertex, itr_vertex)
+                if (not graph.has_edge(vertex, itr_vertex)) and (not graph.has_edge(itr_vertex, vertex)) and vertex != itr_vertex:
+                    graph.add_edge(vertex, itr_vertex, style='dashed')
+                    graph[vertex][itr_vertex]['cut_times'] = 0
+                    edge_added = True
                     break
+            if edge_added:
+                break
 
 
 def preprocessing(path_to_json, output_directory):
@@ -199,6 +208,7 @@ def save_fig(graph, path, size):
     # Gets format from end of filename
     plt.savefig(path, format=path.split('.')[-1])
     plt.close()
+
 
 def main():
     """ Contains majority of expermiment. Runs a markov chain on the state dual graph, determining how the distribution is affected to changes in the

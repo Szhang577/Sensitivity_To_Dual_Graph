@@ -1,0 +1,3 @@
+maximum score: -74.80000000000001
+edges changed: 400
+Seat Score: 2.8

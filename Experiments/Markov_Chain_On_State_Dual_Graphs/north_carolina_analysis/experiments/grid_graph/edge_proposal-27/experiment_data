@@ -1,0 +1,20 @@
+{
+  "X_POSITION": "C_X",
+  "Y_POSITION": "C_Y",
+  "PARTY_A_COL": "pink",
+  "PARTY_B_COL": "purple",
+  "UNDERLYING_GRAPH_FILE": "./plots/UnderlyingGraph.png",
+  "WIDTH": 1,
+  "ASSIGN_COL": "cddict",
+  "POP_COL": "population",
+  "SIERPINSKI_POP_STYLE": "random",
+  "GERRYCHAIN_STEPS": 25,
+  "CHAIN_STEPS": 50,
+  "NUM_DISTRICTS": 5,
+  "STATE_NAME": "north_carolina",
+  "PERCENT_FACES": 0.05,
+  "PROPOSAL_TYPE": "add_edge",
+  "epsilon": 0.01,
+  "EXPERIMENT_NAME": "experiments/grid_graph/edge_proposal",
+  "METADATA_FILE": "experiment_data"
+}
